@@ -2,6 +2,10 @@
 
 A module to encode / decode binary data and streams.
 
+## Install
+
+<strong>THIS MODULE IS STILL A WORK IN PROGRESS, DO NOT USE!</strong>
+
 ## Usage
 
 Let's say you want to parse a simple C struct, buffy can help:
