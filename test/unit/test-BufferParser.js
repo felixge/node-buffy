@@ -58,12 +58,28 @@ test('BufferParser', {
     assert.strictEqual(parser.int16, parser.int16BE);
   },
 
+  'uint16LE': function() {
+    var buffer = new Buffer([1, 127, 128, 255]);
+    var parser = new BufferParser(buffer);
+
+    assert.equal(parser.uint16LE(), 1 + 127 * 256);
+    assert.equal(parser.uint16LE(), 128 + 255 * 256);
+  },
+
+  'int16LE': function() {
+    var buffer = new Buffer([1, 127, 128, 255]);
+    var parser = new BufferParser(buffer);
+
+    assert.equal(parser.int16LE(), 1 + 127 * 256);
+    assert.equal(parser.int16LE(), -128);
+  },
+
   'uint32BE': function() {
     var buffer = new Buffer([1, 2, 3, 4, 5, 6, 7, 8]);
     var parser = new BufferParser(buffer);
 
-    assert.equal(parser.uint32BE(), 1 * (256 * 256 * 256) + 2 * (256 * 256) + 3 * (256) + 4);
-    assert.equal(parser.uint32BE(), 5 * (256 * 256 * 256) + 6 * (256 * 256) + 7 * (256) + 8);
+    assert.equal(parser.uint32BE(), 16909060);
+    assert.equal(parser.uint32BE(), 84281096);
   },
 
   'uint32: alias for uint32BE': function() {
@@ -75,13 +91,29 @@ test('BufferParser', {
     var buffer = new Buffer([1, 2, 3, 4, 255, 254, 253, 252]);
     var parser = new BufferParser(buffer);
 
-    assert.equal(parser.int32BE(), 1 * (256 * 256 * 256) + 2 * (256 * 256) + 3 * (256) + 4);
-    assert.equal(parser.int32BE(), (255 * (256 * 256 * 256) + 254 * (256 * 256) + 253 * (256) + 252) - 0xffffffff - 1);
+    assert.equal(parser.int32BE(), 16909060);
+    assert.equal(parser.int32BE(), -66052);
   },
 
   'int32: alias for int32BE': function() {
     var parser = new BufferParser();
     assert.strictEqual(parser.int32, parser.int32BE);
+  },
+
+  'uint32LE': function() {
+    var buffer = new Buffer([1, 2, 3, 4, 5, 6, 7, 8]);
+    var parser = new BufferParser(buffer);
+
+    assert.equal(parser.uint32LE(), 67305985);
+    assert.equal(parser.uint32LE(), 134678021);
+  },
+
+  'int32LE': function() {
+    var buffer = new Buffer([1, 2, 3, 4, 255, 254, 253, 252]);
+    var parser = new BufferParser(buffer);
+
+    assert.equal(parser.int32LE(), 67305985);
+    assert.equal(parser.int32LE(), -50462977);
   },
 
   'ascii: fixed length ascii': testParseFixedLengthAsciiWith('ascii'),
