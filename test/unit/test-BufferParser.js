@@ -39,6 +39,12 @@ test('BufferParser', {
     assert.equal(parser.uint16BE(), 128 * 256 + 255);
   },
 
+  'uint16: alias for uint16BE': function() {
+    var parser = new BufferParser();
+    assert.strictEqual(parser.uint16, parser.uint16BE);
+  },
+
+
   'int16BE': function() {
     var buffer = new Buffer([1, 127, 128, 255]);
     var parser = new BufferParser(buffer);
@@ -47,14 +53,35 @@ test('BufferParser', {
     assert.equal(parser.int16BE(), -128 * 256 + 255);
   },
 
-  'int16': function() {
+  'int16: alias for int16BE': function() {
     var parser = new BufferParser();
     assert.strictEqual(parser.int16, parser.int16BE);
   },
 
-  'uint16': function() {
+  'uint32BE': function() {
+    var buffer = new Buffer([1, 2, 3, 4, 5, 6, 7, 8]);
+    var parser = new BufferParser(buffer);
+
+    assert.equal(parser.uint32BE(), 1 * (256 * 256 * 256) + 2 * (256 * 256) + 3 * (256) + 4);
+    assert.equal(parser.uint32BE(), 5 * (256 * 256 * 256) + 6 * (256 * 256) + 7 * (256) + 8);
+  },
+
+  'uint32: alias for uint32BE': function() {
     var parser = new BufferParser();
-    assert.strictEqual(parser.uint16, parser.uint16BE);
+    assert.strictEqual(parser.uint32, parser.uint32BE);
+  },
+
+  'int32BE': function() {
+    var buffer = new Buffer([1, 2, 3, 4, 255, 254, 253, 252]);
+    var parser = new BufferParser(buffer);
+
+    assert.equal(parser.int32BE(), 1 * (256 * 256 * 256) + 2 * (256 * 256) + 3 * (256) + 4);
+    assert.equal(parser.int32BE(), (255 * (256 * 256 * 256) + 254 * (256 * 256) + 253 * (256) + 252) - 0xffffffff - 1);
+  },
+
+  'int32: alias for int32BE': function() {
+    var parser = new BufferParser();
+    assert.strictEqual(parser.int32, parser.int32BE);
   },
 
   'ascii: fixed length ascii': testParseFixedLengthAsciiWith('ascii'),
