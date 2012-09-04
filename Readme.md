@@ -27,11 +27,13 @@ var struct = {
 
 Returns the next (un)signed 8 bit integer.
 
-### parser.int16() / parser.uint16()
 ### parser.int16BE() / parser.uint16BE() / parser.int16LE() / parser.uint16LE()
 
-Returns the next (un)signed 16 bit integer. Defaults to big endian unless
-invoked with LE/BE suffix.
+Returns the next (un)signed 16 bit integer in the chosen endianness.
+
+### parser.int16() / parser.uint16()
+
+Alias for `parser.int16BE()` / `parser.uint16BE()`.
 
 ### parser.ascii([bytes]) / parser.utf8([bytes])
 
