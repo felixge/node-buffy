@@ -21,7 +21,36 @@ var struct = {
 // {version: 23, id: 15, name: 'test'}
 ```
 
+Parsing a buffer is nice, but what about streams? Well, buffy has your back:
+
+```js
+var buffy      = require('buffy');
+var net        = require('net');
+var connection = net.createConnection(1337, 'example.org');
+
+var parser = buffy.createParser();
+connection.pipe(parser);
+
+parser.on('data', function() {
+  while (parser.bytesAvailable() >= 9) {
+    var struct = {
+      version : parser.uint8(),
+      id      : parser.uint32(),
+      name    : parser.ascii(4),
+    };
+  }
+});
+```
+
 ## API
+
+### parser.write(buffer)
+
+Appends the given `buffer` to the internal buffer.
+
+### parser.bytesAvailable(buffer)
+
+Returns the number of internally buffered bytes that have not yet been consumed.
 
 ### parser.int8() / parser.uint8()
 

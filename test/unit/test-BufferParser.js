@@ -3,12 +3,65 @@ var test         = require('utest');
 var assert       = require('assert');
 var BufferParser = require(common.lib + '/BufferParser');
 
-test('BufferParser', {
-  'options.offset': function() {
+test('BufferParser: Constructor', {
+  'offset option': function() {
     var buffer = new Buffer([0, 127]);
     var parser = new BufferParser({buffer: buffer, offset: 1});
 
     assert.equal(parser.uint8(), 127);
+  },
+});
+
+test('BufferParser: WritableStream', {
+  'is writable by default': function() {
+    var parser = new BufferParser();
+    assert.equal(parser.writable, true);
+  },
+
+  'write: returns true when active': function() {
+    var parser = new BufferParser();
+    assert.equal(parser.write(new Buffer(0)), true);
+  },
+
+  'write: returns false when paused': function() {
+    var parser = new BufferParser();
+
+    parser.pause();
+    assert.equal(parser.write(new Buffer(0)), false);
+  },
+
+  'write: returns true when resumed': function() {
+    var parser = new BufferParser();
+
+    parser.pause();
+    assert.equal(parser.write(new Buffer(0)), false);
+
+    parser.resume();
+    assert.equal(parser.write(new Buffer(0)), true);
+  },
+
+  'write: collects buffer data': function() {
+    var parser = new BufferParser();
+
+    parser.write(new Buffer([1, 2]));
+    assert.equal(parser.uint8(), 1);
+
+    parser.write(new Buffer([3]));
+    assert.equal(parser.uint8(), 2);
+    assert.equal(parser.uint8(), 3);
+  },
+});
+
+test('BufferParser: Parser Methods', {
+  'bytesAvailable': function() {
+    var buffer = new Buffer([1, 127, 128, 255]);
+    var parser = new BufferParser(buffer);
+
+    assert.equal(parser.bytesAvailable(), 4);
+    parser.uint8();
+    parser.uint8();
+
+    assert.equal(parser.bytesAvailable(), 2);
   },
 
   'uint8': function() {
