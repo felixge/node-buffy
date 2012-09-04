@@ -1,0 +1,24 @@
+{
+  "author": "Felix Geisendörfer <felix@debuggable.com> (http://debuggable.com/)",
+  "name": "buffer-parser",
+  "description": "A module to parse binary packets and streams.",
+  "version": "0.0.0",
+  "homepage": "WIP",
+  "repository": {
+    "type": "git",
+    "url": "wip"
+  },
+  "main": "./index",
+  "scripts": {
+    "test": "make test"
+  },
+  "dependencies": {},
+  "optionalDependencies": {},
+  "devDependencies": {
+    "utest": "0.0.6",
+    "urun": "0.0.6"
+  },
+  "engines": {
+    "node": "*"
+  }
+}
