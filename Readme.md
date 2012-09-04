@@ -4,20 +4,21 @@ A module to encode / decode binary data and streams.
 
 ## Usage
 
-Let's say you want to parse a simple C struct:
+Let's say you want to parse a simple C struct, buffy can help:
 
 ```js
 var buffy = require('buffy');
 
-var buffer = new Buffer([8, 23]);
+var buffer = new Buffer([23, 0, 0, 0, 15, 116, 101, 115, 116]);
 var parser = buffy.createParser(buffer);
 
-var struct = parser.struct([
-  'unit8', 'length',
-  'unit8', 'version',
-]);
+var struct = {
+  version : parser.uint8(),
+  id      : parser.uint32(),
+  name    : parser.string(),
+};
 
-// {length: 8, version: 23}
+// {version: 23, id: 15, name: 'test'}
 ```
 
 ## API
