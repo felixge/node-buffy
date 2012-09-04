@@ -1,4 +1,6 @@
-# buffer-parser
+# buffy (The Buffer Slayer)
+
+A module to encode / decode binary data and streams.
 
 ## API
 
