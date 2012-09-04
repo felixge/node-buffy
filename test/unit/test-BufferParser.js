@@ -175,6 +175,14 @@ test('BufferParser: Parser Methods', {
   'utf8: fixed length ascii': testParseFixedLengthAsciiWith('utf8'),
   'utf8: fixed length snowman': testParseFixedLengthSnowmanWith('utf8'),
   'utf8: null terminated ascii': testParseNullTerminatedAsciiWith('utf8'),
+
+  'buffer': function() {
+    var buffer = new Buffer([1, 2, 3, 4, 5]);
+    var parser = new BufferParser(buffer);
+
+    assert.deepEqual(parser.buffer(3), new Buffer([1, 2, 3]));
+    assert.deepEqual(parser.buffer(2), new Buffer([4, 5]));
+  },
 });
 
 function testParseFixedLengthAsciiWith(encoding) {

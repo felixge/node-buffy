@@ -69,6 +69,9 @@ Alias for `parser.int16BE()` / `parser.uint16BE()`.
 Returns the next `bytes` as a string of the chosen encoding. If `bytes` is
 omitted, a null terminated string is assumed.
 
+### parser.buffer([bytes])
+
+Returns the next `bytes` as a buffer.
 
 ## Error Handling
 
