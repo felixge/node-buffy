@@ -60,6 +60,10 @@ Returns the next (un)signed 8 bit integer.
 
 Returns the next (un)signed 16 bit integer in the chosen endianness.
 
+### parser.int32BE() / parser.uint32BE() / parser.int32LE() / parser.uint32LE()
+
+Returns the next (un)signed 32 bit integer in the chosen endianness.
+
 ### parser.ascii([bytes]) / parser.utf8([bytes])
 
 Returns the next `bytes` as a string of the chosen encoding. If `bytes` is
