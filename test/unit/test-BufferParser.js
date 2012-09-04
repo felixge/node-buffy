@@ -44,7 +44,6 @@ test('BufferParser', {
     assert.strictEqual(parser.uint16, parser.uint16BE);
   },
 
-
   'int16BE': function() {
     var buffer = new Buffer([1, 127, 128, 255]);
     var parser = new BufferParser(buffer);
