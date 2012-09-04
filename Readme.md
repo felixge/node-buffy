@@ -9,7 +9,7 @@ Let's say you want to parse a simple C struct, buffy can help:
 ```js
 var buffy = require('buffy');
 
-var buffer = new Buffer([23, 0, 0, 0, 15, 116, 101, 115, 116]);
+var buffer = new Buffer([23, 0, 0, 0, 15, 116, 101, 115, 116, 0]);
 var parser = buffy.createParser(buffer);
 
 var struct = {
