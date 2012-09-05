@@ -3,7 +3,7 @@ var test   = require('utest');
 var assert = require('assert');
 var Reader = require(common.lib + '/Reader');
 
-test('Reader: Constructor', {
+test('Constructor', {
   'offset option': function() {
     var buffer = new Buffer([0, 127]);
     var reader = new Reader({buffer: buffer, offset: 1});
@@ -12,7 +12,7 @@ test('Reader: Constructor', {
   },
 });
 
-test('Reader: WritableStream', {
+test('WritableStream interface', {
   'is writable by default': function() {
     var reader = new Reader();
     assert.equal(reader.writable, true);
@@ -52,7 +52,7 @@ test('Reader: WritableStream', {
   },
 });
 
-test('Reader: Parser Methods', {
+test('Read Methods', {
   'bytesAvailable': function() {
     var buffer = new Buffer([1, 127, 128, 255]);
     var reader = new Reader(buffer);
