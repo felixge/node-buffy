@@ -1,7 +1,7 @@
 {
   "author": "Felix Geisendörfer <felix@debuggable.com> (http://debuggable.com/)",
   "name": "buffy",
-  "description": "A module to parse binary packets and streams.",
+  "description": "A module to read / write binary data and streams.",
   "version": "0.0.0",
   "homepage": "WIP",
   "repository": {

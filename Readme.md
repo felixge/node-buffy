@@ -1,6 +1,6 @@
 # buffy (The Buffer Slayer)
 
-A module to encode / decode binary data and streams.
+A module to read / write binary data and streams.
 
 ## Install
 
@@ -14,12 +14,12 @@ Let's say you want to parse a simple C struct, buffy can help:
 var buffy = require('buffy');
 
 var buffer = new Buffer([23, 0, 0, 0, 15, 116, 101, 115, 116]);
-var parser = buffy.createParser(buffer);
+var reader = buffy.createReader(buffer);
 
 var struct = {
-  version : parser.uint8(),
-  id      : parser.uint32(),
-  name    : parser.ascii(4),
+  version : reader.uint8(),
+  id      : reader.uint32(),
+  name    : reader.ascii(4),
 };
 
 // {version: 23, id: 15, name: 'test'}
@@ -32,15 +32,15 @@ var buffy      = require('buffy');
 var net        = require('net');
 var connection = net.createConnection(1337, 'example.org');
 
-var parser = buffy.createParser();
-connection.pipe(parser);
+var reader = buffy.createReader();
+connection.pipe(reader);
 
-parser.on('data', function() {
-  while (parser.bytesAvailable() >= 9) {
+reader.on('data', function() {
+  while (reader.bytesAvailable() >= 9) {
     var struct = {
-      version : parser.uint8(),
-      id      : parser.uint32(),
-      name    : parser.ascii(4),
+      version : reader.uint8(),
+      id      : reader.uint32(),
+      name    : reader.ascii(4),
     };
   }
 });
@@ -48,36 +48,36 @@ parser.on('data', function() {
 
 ## API
 
-### parser.write(buffer)
+### reader.write(buffer)
 
 Appends the given `buffer` to the internal buffer.
 
-### parser.bytesAvailable(buffer)
+### reader.bytesAvailable(buffer)
 
 Returns the number of internally buffered bytes that have not yet been consumed.
 
-### parser.int8() / parser.uint8()
+### reader.int8() / reader.uint8()
 
 Returns the next (un)signed 8 bit integer.
 
-### parser.int16BE() / parser.uint16BE() / parser.int16LE() / parser.uint16LE()
+### reader.int16BE() / reader.uint16BE() / reader.int16LE() / reader.uint16LE()
 
 Returns the next (un)signed 16 bit integer in the chosen endianness.
 
-### parser.int32BE() / parser.uint32BE() / parser.int32LE() / parser.uint32LE()
+### reader.int32BE() / reader.uint32BE() / reader.int32LE() / reader.uint32LE()
 
 Returns the next (un)signed 32 bit integer in the chosen endianness.
 
-### parser.ascii([bytes]) / parser.utf8([bytes])
+### reader.ascii([bytes]) / reader.utf8([bytes])
 
 Returns the next `bytes` as a string of the chosen encoding. If `bytes` is
 omitted, a null terminated string is assumed.
 
-### parser.buffer([bytes])
+### reader.buffer([bytes])
 
 Returns the next `bytes` as a buffer.
 
 ## Error Handling
 
-The parser will throw an exception whenever an operation exceeds the boundary
+The reader will throw an exception whenever an operation exceeds the boundary
 of the internal buffer.

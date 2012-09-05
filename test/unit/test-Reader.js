@@ -1,0 +1,209 @@
+var common = require('../common');
+var test   = require('utest');
+var assert = require('assert');
+var Reader = require(common.lib + '/Reader');
+
+test('Reader: Constructor', {
+  'offset option': function() {
+    var buffer = new Buffer([0, 127]);
+    var reader = new Reader({buffer: buffer, offset: 1});
+
+    assert.equal(reader.uint8(), 127);
+  },
+});
+
+test('Reader: WritableStream', {
+  'is writable by default': function() {
+    var reader = new Reader();
+    assert.equal(reader.writable, true);
+  },
+
+  'write: returns true when active': function() {
+    var reader = new Reader();
+    assert.equal(reader.write(new Buffer(0)), true);
+  },
+
+  'write: returns false when paused': function() {
+    var reader = new Reader();
+
+    reader.pause();
+    assert.equal(reader.write(new Buffer(0)), false);
+  },
+
+  'write: returns true when resumed': function() {
+    var reader = new Reader();
+
+    reader.pause();
+    assert.equal(reader.write(new Buffer(0)), false);
+
+    reader.resume();
+    assert.equal(reader.write(new Buffer(0)), true);
+  },
+
+  'write: collects buffer data': function() {
+    var reader = new Reader();
+
+    reader.write(new Buffer([1, 2]));
+    assert.equal(reader.uint8(), 1);
+
+    reader.write(new Buffer([3]));
+    assert.equal(reader.uint8(), 2);
+    assert.equal(reader.uint8(), 3);
+  },
+});
+
+test('Reader: Parser Methods', {
+  'bytesAvailable': function() {
+    var buffer = new Buffer([1, 127, 128, 255]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader.bytesAvailable(), 4);
+    reader.uint8();
+    reader.uint8();
+
+    assert.equal(reader.bytesAvailable(), 2);
+  },
+
+  'uint8': function() {
+    var buffer = new Buffer([1, 127, 128, 255]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader.uint8(), 1);
+    assert.equal(reader.uint8(), 127);
+    assert.equal(reader.uint8(), 128);
+    assert.equal(reader.uint8(), 255);
+  },
+
+  'int8': function() {
+    var buffer = new Buffer([1, 127, 128, 255]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader.int8(), 1);
+    assert.equal(reader.int8(), 127);
+    assert.equal(reader.int8(), -128);
+    assert.equal(reader.int8(), -1);
+  },
+
+  'uint16BE': function() {
+    var buffer = new Buffer([1, 127, 128, 255]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader.uint16BE(), 1 * 256 + 127);
+    assert.equal(reader.uint16BE(), 128 * 256 + 255);
+  },
+
+  'int16BE': function() {
+    var buffer = new Buffer([1, 127, 128, 255]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader.int16BE(), 1 * 256 + 127);
+    assert.equal(reader.int16BE(), -128 * 256 + 255);
+  },
+
+  'uint16LE': function() {
+    var buffer = new Buffer([1, 127, 128, 255]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader.uint16LE(), 1 + 127 * 256);
+    assert.equal(reader.uint16LE(), 128 + 255 * 256);
+  },
+
+  'int16LE': function() {
+    var buffer = new Buffer([1, 127, 128, 255]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader.int16LE(), 1 + 127 * 256);
+    assert.equal(reader.int16LE(), -128);
+  },
+
+  'uint32BE': function() {
+    var buffer = new Buffer([1, 2, 3, 4, 5, 6, 7, 8]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader.uint32BE(), 16909060);
+    assert.equal(reader.uint32BE(), 84281096);
+  },
+
+  'int32BE': function() {
+    var buffer = new Buffer([1, 2, 3, 4, 255, 254, 253, 252]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader.int32BE(), 16909060);
+    assert.equal(reader.int32BE(), -66052);
+  },
+
+  'uint32LE': function() {
+    var buffer = new Buffer([1, 2, 3, 4, 5, 6, 7, 8]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader.uint32LE(), 67305985);
+    assert.equal(reader.uint32LE(), 134678021);
+  },
+
+  'int32LE': function() {
+    var buffer = new Buffer([1, 2, 3, 4, 255, 254, 253, 252]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader.int32LE(), 67305985);
+    assert.equal(reader.int32LE(), -50462977);
+  },
+
+  'ascii: fixed length ascii': testParseFixedLengthAsciiWith('ascii'),
+  'ascii: fixed length snowman': testParseFixedLengthSnowmanWith('ascii'),
+  'ascii: null terminated ascii': testParseNullTerminatedAsciiWith('ascii'),
+
+  'utf8: fixed length ascii': testParseFixedLengthAsciiWith('utf8'),
+  'utf8: fixed length snowman': testParseFixedLengthSnowmanWith('utf8'),
+  'utf8: null terminated ascii': testParseNullTerminatedAsciiWith('utf8'),
+
+  'buffer': function() {
+    var buffer = new Buffer([1, 2, 3, 4, 5]);
+    var reader = new Reader(buffer);
+
+    assert.deepEqual(reader.buffer(3), new Buffer([1, 2, 3]));
+    assert.deepEqual(reader.buffer(2), new Buffer([4, 5]));
+  },
+});
+
+function testParseFixedLengthAsciiWith(encoding) {
+  return function() {
+    var buffer = new Buffer([
+      'a'.charCodeAt(),
+      'b'.charCodeAt(),
+      'c'.charCodeAt(),
+      'd'.charCodeAt(),
+      'e'.charCodeAt(),
+    ]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader[encoding](3), 'abc');
+    assert.equal(reader[encoding](2), 'de');
+  };
+}
+
+function testParseFixedLengthSnowmanWith(encoding) {
+  return function() {
+    var buffer = new Buffer('\u2603', 'utf8');
+    var reader = new Reader(buffer);
+
+    assert.equal(reader[encoding](3), '☃');
+  };
+}
+
+function testParseNullTerminatedAsciiWith(encoding) {
+  return function() {
+    var buffer = new Buffer([
+      'a'.charCodeAt(),
+      'b'.charCodeAt(),
+      'c'.charCodeAt(),
+      0,
+      'd'.charCodeAt(),
+      'e'.charCodeAt(),
+      0,
+    ]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader[encoding](), 'abc');
+    assert.equal(reader[encoding](), 'de');
+  };
+}
