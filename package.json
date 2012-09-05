@@ -3,10 +3,10 @@
   "name": "buffy",
   "description": "A module to read / write binary data and streams.",
   "version": "0.0.0",
-  "homepage": "WIP",
+  "homepage": "https://github.com/felixge/node-buffy",
   "repository": {
     "type": "git",
-    "url": "wip"
+    "url": "git://github.com/felixge/node-buffy.git"
   },
   "main": "./index",
   "scripts": {
