@@ -53,15 +53,15 @@ test('WritableStream interface', {
 });
 
 test('Read Methods', {
-  'bytesAvailable': function() {
+  'bytesAhead': function() {
     var buffer = new Buffer([1, 127, 128, 255]);
     var reader = new Reader(buffer);
 
-    assert.equal(reader.bytesAvailable(), 4);
+    assert.equal(reader.bytesAhead(), 4);
     reader.uint8();
     reader.uint8();
 
-    assert.equal(reader.bytesAvailable(), 2);
+    assert.equal(reader.bytesAhead(), 2);
   },
 
   'uint8': function() {

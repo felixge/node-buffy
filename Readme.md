@@ -36,7 +36,7 @@ var reader = buffy.createReader();
 connection.pipe(reader);
 
 reader.on('data', function() {
-  while (reader.bytesAvailable() >= 9) {
+  while (reader.bytesAhead() >= 9) {
     var struct = {
       version : reader.uint8(),
       id      : reader.uint32(),
@@ -52,9 +52,9 @@ reader.on('data', function() {
 
 Appends the given `buffer` to the internal buffer.
 
-### reader.bytesAvailable(buffer)
+### reader.bytesAhead(buffer)
 
-Returns the number of internally buffered bytes that have not yet been consumed.
+Returns the number of unread bytes available to the reader.
 
 ### reader.int8() / reader.uint8()
 
