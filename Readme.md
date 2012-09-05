@@ -16,7 +16,7 @@ var buffy = require('buffy');
 var buffer = new Buffer([23, 0, 0, 0, 15, 116, 101, 115, 116]);
 var reader = buffy.createReader(buffer);
 
-var struct = {
+var record = {
   version : reader.uint8(),
   id      : reader.uint32(),
   name    : reader.ascii(4),
@@ -35,15 +35,19 @@ var connection = net.createConnection(1337, 'example.org');
 var reader = buffy.createReader();
 connection.pipe(reader);
 
+var struct = [
+  ['version' , 'uint8'],
+  ['id'      , 'uint32'],
+  ['name'    , 'ascii', 4],
+];
+
 reader.on('data', function() {
-  while (reader.bytesAhead() >= 9) {
-    var struct = {
-      version : reader.uint8(),
-      id      : reader.uint32(),
-      name    : reader.ascii(4),
-    };
+  var record = reader.read(struct);
+  if (!record) {
+    return;
   }
 });
+
 ```
 
 ## API
