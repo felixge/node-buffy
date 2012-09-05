@@ -52,7 +52,7 @@ reader.on('data', function() {
 
 Appends the given `buffer` to the internal buffer.
 
-### reader.bytesAhead(buffer)
+### reader.bytesAhead()
 
 Returns the number of unread bytes available to the reader.
 
