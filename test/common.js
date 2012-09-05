@@ -1,5 +1,5 @@
 var common = exports;
-var path = require('path');
+var path   = require('path');
 
-common.lib = path.join(__dirname, '../lib');
-
+common.root = path.join(__dirname, '..');
+common.lib  = path.join(common.root, 'lib');
