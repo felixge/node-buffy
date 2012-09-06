@@ -35,14 +35,14 @@ var connection = net.createConnection(1337, 'example.org');
 var reader = buffy.createReader();
 connection.pipe(reader);
 
-var recordStruct = [
+var struct = [
   ['version' , 'uint8'],
   ['id'      , 'uint32'],
   ['name'    , 'ascii', 4],
 ];
 
 reader.on('data', function() {
-  var record = reader.read(recordStruct);
+  var record = reader.read(struct);
   if (!record) {
     return;
   }
