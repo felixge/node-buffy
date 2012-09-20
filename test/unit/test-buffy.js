@@ -12,6 +12,6 @@ test('buffy', {
   'createReader: maps to Reader constructor': function() {
     var reader = buffy.createReader(new Buffer(23));
     assert.equal(reader instanceof Reader, true);
-    assert.equal(reader.bytesAvailable(), 23);
+    assert.equal(reader.bytesAhead(), 23);
   },
 });

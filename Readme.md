@@ -72,6 +72,14 @@ Returns the next (un)signed 16 bit integer in the chosen endianness.
 
 Returns the next (un)signed 32 bit integer in the chosen endianness.
 
+### reader.float32BE() / reader.float32LE()
+
+Returns the next 32 bit float in the chosen endianness.
+
+### reader.double64BE() / reader.double64LE()
+
+Returns the next 64 bit double in the chosen endianness.
+
 ### reader.ascii([bytes]) / reader.utf8([bytes])
 
 Returns the next `bytes` as a string of the chosen encoding. If `bytes` is

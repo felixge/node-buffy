@@ -148,6 +148,51 @@ test('Read Methods', {
     assert.equal(reader.int32LE(), -50462977);
   },
 
+  'float32BE': function() {
+    var buffer = new Buffer([
+      0x41, 0xb8, 0x00, 0x00, // 23
+      0xbf, 0x80, 0x00, 0x00, // -1
+    ]);
+
+    var reader = new Reader(buffer);
+
+    assert.equal(reader.float32BE(), 23);
+    assert.equal(reader.float32BE(), -1);
+  },
+
+  'float32LE': function() {
+    var buffer = new Buffer([
+      0x00, 0x00, 0xb8, 0x41, // 23
+      0x00, 0x00, 0x80, 0xbf, // -1
+    ]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader.float32LE(), 23);
+    assert.equal(reader.float32LE(), -1);
+  },
+
+  'double64BE': function() {
+    var buffer = new Buffer([
+      0x40, 0x37, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0xbf, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    ]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader.double64BE(), 23);
+    assert.equal(reader.double64BE(), -1);
+  },
+
+  'double64LE': function() {
+    var buffer = new Buffer([
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x37, 0x40,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf0, 0xbf,
+    ]);
+    var reader = new Reader(buffer);
+
+    assert.equal(reader.double64LE(), 23);
+    assert.equal(reader.double64LE(), -1);
+  },
+
   'ascii: fixed length ascii': testParseFixedLengthAsciiWith('ascii'),
   'ascii: fixed length snowman': testParseFixedLengthSnowmanWith('ascii'),
   'ascii: null terminated ascii': testParseNullTerminatedAsciiWith('ascii'),
