@@ -53,11 +53,17 @@ their sequences.
 
 ### reader.write(buffer)
 
-Appends the given `buffer` to the internal buffer.
+Appends the given `buffer` to the internal buffer. Whenever possible, existing
+space inside the internal buffer will be reused, otherwise a new / bigger buffer
+will be created.
 
 ### reader.bytesAhead()
 
 Returns the number of unread bytes available to the reader.
+
+### reader.bytesBuffered()
+
+Returns the number of bytes that are buffered by the Reader internally.
 
 ### reader.int8() / reader.uint8()
 
