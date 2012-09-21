@@ -50,6 +50,19 @@ test('WritableStream interface', {
     assert.equal(reader.uint8(), 2);
     assert.equal(reader.uint8(), 3);
   },
+
+  'write: uses existing buffer if possible': function() {
+    var reader = new Reader();
+
+    reader.write(new Buffer([1, 2, 3]));
+    assert.equal(reader.uint8(), 1);
+    reader.write(new Buffer([4]));
+
+    assert.equal(reader.bytesBuffered(), 3);
+    assert.equal(reader.uint8(), 2);
+    assert.equal(reader.uint8(), 3);
+    assert.equal(reader.uint8(), 4);
+  },
 });
 
 test('Read Methods', {
