@@ -35,20 +35,19 @@ var connection = net.createConnection(1337, 'example.org');
 var reader = buffy.createReader();
 connection.pipe(reader);
 
-var struct = [
-  ['version' , 'uint8'],
-  ['id'      , 'uint32'],
-  ['name'    , 'ascii', 4],
-];
-
 reader.on('data', function() {
-  var record = reader.read(struct);
-  if (!record) {
-    return;
+  while (reader.bytesAhead() >= 9) {
+    var record = {
+      version : reader.uint8(),
+      id      : reader.uint32(),
+      name    : reader.ascii(4),
+    };
   }
 });
-
 ```
+
+Future version may also support a declarative syntax for defining structs and
+their sequences.
 
 ## API
 
