@@ -49,7 +49,7 @@ reader.on('data', function() {
 Future version may also support a declarative syntax for defining structs and
 their sequences.
 
-## API
+## Reader API
 
 ### reader.write(buffer)
 
@@ -93,6 +93,10 @@ omitted, a null terminated string is assumed.
 ### reader.buffer([bytes])
 
 Returns the next `bytes` as a buffer.
+
+## Writer API
+
+The Writer has not been implemented yet.
 
 ## Error Handling
 
