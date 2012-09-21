@@ -4,7 +4,9 @@ A module to read / write binary data and streams.
 
 ## Install
 
-<strong>THIS MODULE IS STILL A WORK IN PROGRESS, DO NOT USE!</strong>
+```bash
+npm install buffy
+```
 
 ## Usage
 
