@@ -242,6 +242,12 @@ test('Read Methods', {
     assert.deepEqual(reader.buffer(3), new Buffer([1, 2, 3]));
     assert.deepEqual(reader.buffer(2), new Buffer([4, 5]));
   },
+  'buffer: return a copy' : function () {
+    var reader = new Reader(new Buffer([1]));
+    var origResult = reader.buffer(1);
+    reader.write(new Buffer([2]));
+    assert.deepEqual(origResult, new Buffer([1]));
+  }
 });
 
 function testParseFixedLengthAsciiWith(encoding) {
