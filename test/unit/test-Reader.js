@@ -77,6 +77,15 @@ test('Read Methods', {
     assert.equal(reader.bytesAhead(), 2);
   },
 
+  'bytesAhead: reports correctly with smaller buffer': function() {
+    var reader = new Reader();
+
+    reader.write(new Buffer([1, 2]));
+    reader.buffer(2);
+    reader.write(new Buffer([3]));
+    assert.equal(reader.bytesAhead(), 1);
+  },
+
   'uint8': function() {
     var buffer = new Buffer([1, 127, 128, 255]);
     var reader = new Reader(buffer);
