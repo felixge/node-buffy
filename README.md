@@ -96,6 +96,11 @@ omitted, a null terminated string is assumed.
 
 Returns the next `bytes` as a buffer.
 
+### reader.skip([bytes])
+
+Skips `bytes` bytes of the buffer.
+
+
 ## Writer API
 
 The Writer has not been implemented yet.
