@@ -96,10 +96,6 @@ test('Read Methods', {
     reader.buffer(2);
     reader.write(new Buffer([3]));
     assert.equal(reader.bytesAhead(), 1);
-    reader.write(new Buffer([4]));
-    assert.equal(reader.bytesAhead(), 2);
-    reader.buffer(2);
-    assert.equal(reader.bytesAhead(), 0);
   },
 
   'uint8': function() {
