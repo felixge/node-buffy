@@ -254,6 +254,7 @@ test('Read Methods', {
     reader.skip(2);
     assert.deepEqual(reader.buffer(3), new Buffer([3, 4, 5]));
     assert.throws(function() { reader.skip(1); });
+    assert.throws(function() { reader.skip(-1); });
   }
 });
 
