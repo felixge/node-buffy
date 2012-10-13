@@ -63,6 +63,18 @@ test('WritableStream interface', {
     assert.equal(reader.uint8(), 3);
     assert.equal(reader.uint8(), 4);
   },
+
+  'write: grows buffer if neccessary': function() {
+    var reader = new Reader();
+
+    reader.write(new Buffer([1, 2]));
+    assert.equal(reader.uint8(), 1);
+    reader.write(new Buffer([3, 4, 5]));
+    assert.equal(reader.uint8(), 2);
+    assert.equal(reader.uint8(), 3);
+    assert.equal(reader.uint8(), 4);
+    assert.equal(reader.uint8(), 5);
+  },
 });
 
 test('Read Methods', {
@@ -75,6 +87,15 @@ test('Read Methods', {
     reader.uint8();
 
     assert.equal(reader.bytesAhead(), 2);
+  },
+
+  'bytesAhead: reports correctly with smaller buffer': function() {
+    var reader = new Reader();
+
+    reader.write(new Buffer([1, 2]));
+    reader.buffer(2);
+    reader.write(new Buffer([3]));
+    assert.equal(reader.bytesAhead(), 1);
   },
 
   'uint8': function() {
