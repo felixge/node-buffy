@@ -116,7 +116,7 @@ Skips `bytes` bytes of the buffer.
 ### reader.compact()
 
 Force a compaction of the internal buffer to the maximum size needed,
-discaring data already read.
+discarding data already read.
 
 
 ## Writer API
