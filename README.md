@@ -115,7 +115,7 @@ Skips `bytes` bytes of the buffer.
 
 ### reader.compact()
 
-Force a compaction of the internal buffer to the maximum size needed,
+Force a compaction of the internal buffer to the minimum size needed,
 discarding data already read.
 
 
