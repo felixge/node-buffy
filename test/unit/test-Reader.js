@@ -1,3 +1,5 @@
+// vim: ts=2:sw=2
+
 var common = require('../common');
 var test   = require('utest');
 var assert = require('assert');
