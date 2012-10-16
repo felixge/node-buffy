@@ -259,31 +259,31 @@ test('Read Methods', {
 });
 
 test('Meta Methods', {
-    'compact' : function() {
-        var reader = new Reader(new Buffer([1, 2, 3, 4, 5]));
-        reader.buffer(2);
-        assert.equal(reader.bytesBuffered(), 5);
-        reader.compact();
-        assert.equal(reader.bytesBuffered(), 3);
-        assert.deepEqual(reader.buffer(3), new Buffer([3, 4, 5]));
-    },
+  'compact' : function() {
+    var reader = new Reader(new Buffer([1, 2, 3, 4, 5]));
+    reader.buffer(2);
+    assert.equal(reader.bytesBuffered(), 5);
+    reader.compact();
+    assert.equal(reader.bytesBuffered(), 3);
+    assert.deepEqual(reader.buffer(3), new Buffer([3, 4, 5]));
+  },
 
-    'compactOption disabled does not shrink buffer' : function() {
-        var reader = new Reader(new Buffer([1, 2, 3, 4, 5]));
-        reader.buffer(5);
-        reader.write(new Buffer([6]));
-        assert.equal(reader.bytesBuffered(), 5);
-    },
+  'compactOption disabled does not shrink buffer' : function() {
+    var reader = new Reader(new Buffer([1, 2, 3, 4, 5]));
+    reader.buffer(5);
+    reader.write(new Buffer([6]));
+    assert.equal(reader.bytesBuffered(), 5);
+  },
 
-    'compactOption enable does shrink buffer' : function() {
-        var reader = new Reader({
-            buffer : new Buffer([1, 2, 3, 4, 5]),
-            compact : true
-        });
-        reader.buffer(5);
-        reader.write(new Buffer([6]));
-        assert.equal(reader.bytesBuffered(), 1);
-    }
+  'compactOption enable does shrink buffer' : function() {
+    var reader = new Reader({
+      buffer : new Buffer([1, 2, 3, 4, 5]),
+      compact : true
+    });
+    reader.buffer(5);
+    reader.write(new Buffer([6]));
+    assert.equal(reader.bytesBuffered(), 1);
+  }
 
 });
 
