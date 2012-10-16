@@ -53,6 +53,19 @@ their sequences.
 
 ## Reader API
 
+### reader = createReader([buffer] | [options])
+
+Creates a reader with an optional buffer or options hash.
+When using the options hash, you can still supply a buffer with key `buffer`.
+
+#### options
+
+* `buffer` start with the supplied buffer
+* `offset` start reading at the specified offset of the buffer
+* `compact` if true, the internal buffer will be garbage collected on
+  every write operation. See also: method compact()
+
+
 ### reader.write(buffer)
 
 Appends the given `buffer` to the internal buffer. Whenever possible, existing
@@ -99,6 +112,11 @@ Returns the next `bytes` as a buffer.
 ### reader.skip(bytes)
 
 Skips `bytes` bytes of the buffer.
+
+### reader.compact()
+
+Force a compaction of the internal buffer to the minimum size needed,
+discarding data already read.
 
 
 ## Writer API
