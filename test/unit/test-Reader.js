@@ -42,6 +42,16 @@ test('WritableStream interface', {
     assert.equal(reader.write(new Buffer(0)), true);
   },
 
+  'resume: emits drain': function() {
+    var reader = new Reader();
+    var drainEmitted = false;
+    reader.on('drain', function () {
+      drainEmitted = true;
+    });
+    reader.resume();
+    assert.equal(drainEmitted, true, 'calling resume emits drain event');
+  },
+
   'write: collects buffer data': function() {
     var reader = new Reader();
 
@@ -51,6 +61,27 @@ test('WritableStream interface', {
     reader.write(new Buffer([3]));
     assert.equal(reader.uint8(), 2);
     assert.equal(reader.uint8(), 3);
+  },
+
+  'passes stream-spec' : function () {
+    var spec = require('stream-spec');
+    var reader = new Reader();
+    var tester = require('stream-tester');
+    var randomWriter = tester.createRandomStream(
+      function () { return 'line ' + Math.random() + '\n';},
+      5000
+    );
+
+    spec(reader)
+      .writable()
+      .drainable()
+      .validateOnExit();
+
+    randomWriter.pipe(reader);
+    randomWriter.on('end', function () {
+      // consume buffer to emit end()
+      reader.buffer(reader.bytesAhead());
+    });
   },
 
   'write: uses existing buffer if possible': function() {
@@ -76,6 +107,51 @@ test('WritableStream interface', {
     assert.equal(reader.uint8(), 3);
     assert.equal(reader.uint8(), 4);
     assert.equal(reader.uint8(), 5);
+  },
+
+  'end: writes optional buffer' : function() {
+    var reader = new Reader();
+    reader.end(new Buffer([1]));
+    assert.equal(reader.uint8(), 1);
+  },
+
+  'end: emits close' : function() {
+    var reader = new Reader();
+    var closeEmitted = false;
+    reader.on('close', function () {
+      closeEmitted = true;
+    });
+    reader.end();
+    assert.equal(closeEmitted, true, 'calling end emits close event');
+  },
+
+  'end: does not emit close with unread buffer' : function() {
+    var reader = new Reader();
+    var closeEmitted = false;
+    reader.on('close', function () {
+      closeEmitted = true;
+    });
+    reader.end(new Buffer([1]));
+    assert.equal(
+      closeEmitted,
+      false,
+      'calling end with non-empty buffer does not emit close event'
+    );
+  },
+
+  'end: does emit close after buffer is read' : function() {
+    var reader = new Reader(new Buffer([1]));
+    var closeEmitted = false;
+    reader.on('close', function () {
+      closeEmitted = true;
+    });
+    reader.end();
+    reader.buffer(1);
+    process.nextTick(function () {
+      assert.equal(
+        closeEmitted, true, 'emptying buffer after end emits close event'
+      );
+    });
   },
 });
 
