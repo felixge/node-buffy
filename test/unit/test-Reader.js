@@ -229,11 +229,12 @@ test('Read Methods', {
   },
 
   'uint32BE': function() {
-    var buffer = new Buffer([1, 2, 3, 4, 5, 6, 7, 8]);
+    var buffer = new Buffer([1, 2, 3, 4, 5, 6, 7, 8, 255, 254, 253, 252]);
     var reader = new Reader(buffer);
 
     assert.equal(reader.uint32BE(), 16909060);
     assert.equal(reader.uint32BE(), 84281096);
+    assert.equal(reader.uint32BE(), 4294901244);
   },
 
   'int32BE': function() {
@@ -245,11 +246,12 @@ test('Read Methods', {
   },
 
   'uint32LE': function() {
-    var buffer = new Buffer([1, 2, 3, 4, 5, 6, 7, 8]);
+    var buffer = new Buffer([1, 2, 3, 4, 5, 6, 7, 8, 252, 253, 254, 255]);
     var reader = new Reader(buffer);
 
     assert.equal(reader.uint32LE(), 67305985);
     assert.equal(reader.uint32LE(), 134678021);
+    assert.equal(reader.uint32LE(), 4294901244);
   },
 
   'int32LE': function() {
