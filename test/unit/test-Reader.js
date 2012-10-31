@@ -333,8 +333,6 @@ test('Read Methods', {
     var reader = new Reader(new Buffer([1, 2, 3, 4, 5]));
     reader.skip(2);
     assert.deepEqual(reader.buffer(3), new Buffer([3, 4, 5]));
-    assert.throws(function() { reader.skip(1); });
-    assert.throws(function() { reader.skip(-1); });
   }
 });
 
