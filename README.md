@@ -1,5 +1,7 @@
 # buffy (The Buffer Slayer)
 
+[![Build Status](https://secure.travis-ci.org/felixge/node-buffy.png)](http://travis-ci.org/felixge/node-buffy)
+
 A module to read / write binary data and streams.
 
 ## Install
